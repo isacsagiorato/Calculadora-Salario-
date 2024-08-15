@@ -8,6 +8,9 @@
 </head>
 <body>
 
+
+       
+
     <div id="container">
         <div id="title">
             Calculadora do INSS
@@ -29,5 +32,41 @@
             <span id="liquido" class="valor">R$ 0,00</span>
         </div>
     </div>
+    <script>
+        function calcular() {
+            const salarioBruto = parseFloat(document.getElementById('salario').value);
+            
+            // Se o salário bruto não for um número ou for menor ou igual a 0, mostra 0.00
+            if (isNaN(salarioBruto) || salarioBruto <= 0) {
+                document.getElementById('inss').textContent = '0.00';
+                document.getElementById('fgts').textContent = '0.00';
+                document.getElementById('liquido').textContent = '0.00';
+                return;
+            }
+
+            let inss = 0;
+            let fgts = salarioBruto * 0.08; // FGTS é 8% do salário bruto
+
+            if (salarioBruto <= 1412.00) {
+                inss = salarioBruto * 0.075;
+            } else if (salarioBruto <= 2666.68) {
+                inss = salarioBruto * 0.09 - 21.18;
+            } else if (salarioBruto <= 4000.03) {
+                inss = salarioBruto * 0.12 - 101.18;
+            } else if (salarioBruto <= 7786.02) {
+                inss = salarioBruto * 0.14 - 181.18;
+            } else {
+                inss = 7786.02 * 0.14 - 181.18; // Aplicar o teto máximo
+            }
+
+            const salarioLiquido = salarioBruto - inss;
+
+            // Atualiza os valores no HTML
+            document.getElementById('inss').textContent = inss.toFixed(2);
+            document.getElementById('fgts').textContent = fgts.toFixed(2);
+            document.getElementById('liquido').textContent = salarioLiquido.toFixed(2);
+        }
+    </script>
+    
 </body>
 </html>
